@@ -144,7 +144,4 @@ function exit() {
   return true;
 }
 
-process.on('SIGTSTP', exit);
-process.on('SIGINT', exit);
 process.on('exit', exit);
-process.on('uncaughtException', exit);
