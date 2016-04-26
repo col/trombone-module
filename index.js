@@ -39,6 +39,7 @@ function reset() {
 function explode(){
   clearInterval(countdownInterval);
   clearInterval(buzzerInterval);
+  lcd.setColor(255, 0, 0);
   lcd.setCursor(0, 0);
   lcd.write("**   XX:XX    ** \n");
   lcd.setCursor(1, 0);
