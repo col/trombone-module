@@ -36,6 +36,20 @@ function reset() {
   lcd.write("Ready.          ");
 }
 
+function explode(){
+  clearInterval(countdownInterval);
+  clearInterval(buzzerInterval);
+  lcd.setCursor(0, 0);
+  lcd.write("**   XX:XX    ** \n");
+  lcd.setCursor(1, 0);
+  lcd.write(" BOOOOM!?!@#!@  ");
+
+  buzzer.write(1);
+  setTimeout(function(){
+    buzzer.write(0);
+  }, 2000);
+};
+
 device.on('message', function(topic, payload) {
     console.log('Message Received - Topic: ' + topic + ' Payload: ' + payload.toString());
 
@@ -46,6 +60,9 @@ device.on('message', function(topic, payload) {
         break;
       case "reset":
         reset();
+        break;
+      case "boom":
+        explode();
         break;
       case "start":
         startCountdown(payload.duration);
@@ -110,15 +127,7 @@ function startCountdown(initial) {
     }
 
     timeLeft = timeLeft - 1;
-    if (timeLeft < 0) {
-      clearInterval(countdownInterval);
-      clearInterval(buzzerInterval);
-      lcd.setCursor(0, 0);
-      lcd.write("**   " + padZeroes(minutes, 2) + ":" + padZeroes(seconds, 2) + "    ** \n");
-      lcd.setCursor(1, 0);
-      lcd.write(" BOOOOM!?!@#!@  ");
-      buzzer.write(0);
-    }
+    if (timeLeft < 0) { explode() }
   }, 1000);
 }
 
@@ -131,6 +140,7 @@ function soundBuzzer(){
 
 function exit() {
   buzzer.write(0);
+  return true;
 }
 
 process.on('SIGTSTP', exit);
