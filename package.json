@@ -6,7 +6,7 @@
   "author": "Fighting Mongoose",
   "license": "ISC",
   "dependencies": {
-    "aws-iot-device-sdk": "^1.0.11",
+    "aws-iot-device-sdk": "^1.0.12",
     "mraa": "^0.10.1"
   }
 }
