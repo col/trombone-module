@@ -16,10 +16,14 @@ var device = awsIot.device(deviceCredentials);
 
 device.subscribe(mainTopic);
 
+var relay = require('jsupm_grove');
+var flashingLight = new relay.GroveRelay(8);
+
 function disarm() {
   console.log("Disarm!");
   countdownInterval && clearInterval(countdownInterval);
   buzzerInterval && clearInterval(buzzerInterval);
+  flashingLight.off();
   lcd.setColor(0, 255, 0);
   lcd.setCursor(1, 0);
   lcd.write("Congratulations!");
@@ -30,6 +34,7 @@ function reset() {
   console.log("Reset.");
   countdownInterval && clearInterval(countdownInterval);
   buzzerInterval && clearInterval(buzzerInterval);
+  flashingLight.off();
   lcd.setColor(255, 255, 255);
   lcd.setCursor(1, 0);
           // 1234567890123456
@@ -46,9 +51,11 @@ function explode(){
   lcd.write(" BOOOOM!?!@#!@  ");
 
   buzzer.write(1);
+  flashingLight.on();
   setTimeout(function(){
     buzzer.write(0);
-  }, 2000);
+    flashingLight.off();
+  }, 5000);
 };
 
 device.on('message', function(topic, payload) {
@@ -112,6 +119,7 @@ function startCountdown(initial) {
     var timeSpent = initial - timeLeft;
 
     if (timeLeft < 31 && timeLeft > 5 && timeLeft % 10 === 0) {
+      flashingLight.on();
       buzzerInterval && clearInterval(buzzerInterval);
       buzzerInterval = setInterval(soundBuzzer, ((timeLeft / initial) * (buzzerMaxPeriod - buzzerMinPeriod)) + buzzerMinPeriod);
     } else if (timeLeft < 5) {
