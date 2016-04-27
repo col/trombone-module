@@ -28,9 +28,12 @@ function disarm() {
 
 function reset() {
   console.log("Reset.");
+  countdownInterval && clearInterval(countdownInterval);
+  buzzerInterval && clearInterval(buzzerInterval);
   lcd.setColor(255, 255, 255);
   lcd.setCursor(1, 0);
-  lcd.write("Ready.");
+          // 1234567890123456
+  lcd.write("Ready.          ");
 }
 
 device.on('message', function(topic, payload) {
