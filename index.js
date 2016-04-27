@@ -1,10 +1,11 @@
 var awsIot = require('aws-iot-device-sdk');
 
+var homeDir = process.env["HOME"];
 var deviceName = "trombone-edison";
 var deviceCredentials = {
-  keyPath: '~/.aws-device/private.pem.key',
-  certPath: '~/.aws-device/certificate.pem.crt',
-  caPath: '~/.aws-device/root-CA.pem',
+  keyPath: homeDir+'/.aws-device/private.pem.key',
+  certPath: homeDir+'/.aws-device/certificate.pem.crt',
+  caPath: homeDir+'/.aws-device/root-CA.pem',
   clientId: deviceName,
   region: 'ap-southeast-1',
   reconnectPeriod: 1500
