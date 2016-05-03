@@ -105,8 +105,7 @@ var buzzerMaxPeriod = 1000;
 function startCountdown(initial) {
   var timeLeft = initial;
   var buzzerPeriod = buzzerMaxPeriod;
-
-  countdownInterval = setInterval(function() {
+  var secondOut = function () {
     var minutes = Math.floor(timeLeft / 60);
     var seconds = timeLeft % 60;
     var timeSpent = initial - timeLeft;
@@ -129,7 +128,11 @@ function startCountdown(initial) {
 
     timeLeft = timeLeft - 1;
     if (timeLeft < 0) { explode() }
+  }
+  countdownInterval = setInterval(function() {
+    secondOut();
   }, 1000);
+  secondOut();
 }
 
 function soundBuzzer(){
